@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "BattleTanks_04.h"
 #include "TankPlayerController.h"
+#include "BattleTanks_04.h"
+
 
 void ATankPlayerController::BeginPlay()
 {
