@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h" 
 #include "Components/ActorComponent.h"
 #include "Engine/World.h"
@@ -24,6 +25,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AimAt(FVector OUTHitLocation, float LaunchSpeed);
+
+	
 		
 private:
 
