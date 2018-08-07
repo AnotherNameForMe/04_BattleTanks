@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/World.h"
+#include "Components/StaticMeshComponent.h" 
 #include "Components/ActorComponent.h"
+#include "Engine/World.h"
 #include "TankAimComponent.generated.h"
 
 
@@ -17,15 +18,19 @@ public:
 	// Sets default values for this component's properties
 	UTankAimComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	void SetBarrelRefference(UStaticMeshComponent* BarrelToSet);
 
-public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(FVector OUTHitLocation);
+	void AimAt(FVector OUTHitLocation, float LaunchSpeed);
 		
-	
+private:
+
+	UStaticMeshComponent * Barrel = nullptr;
+
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
 };
