@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimComponent.h"
+#include "TankBarrel.h"
 #include "BattleTanks_04Classes.h"
 
 
@@ -14,29 +15,13 @@ UTankAimComponent::UTankAimComponent()
 
 	// ...
 }
-void UTankAimComponent::SetBarrelRefference(UStaticMeshComponent* BarrelToSet)
+void UTankAimComponent::SetBarrelRefference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
 
 
-// Called when the game starts
-void UTankAimComponent::BeginPlay()
-{
-	Super::BeginPlay();
 
-	// ...
-	
-}
-
-
-// Called every frame
-void UTankAimComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
 
 void UTankAimComponent::AimAt(FVector OUTHitLocation, float LaunchSpeed)
 {
@@ -46,13 +31,28 @@ void UTankAimComponent::AimAt(FVector OUTHitLocation, float LaunchSpeed)
 
 	FVector OUTLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-
-	if (UGameplayStatics::SuggestProjectileVelocity(this,OUTLaunchVelocity,StartLocation,OUTHitLocation,LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace))//calculate OUTLaunchVelocity
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, OUTLaunchVelocity, StartLocation, OUTHitLocation, LaunchSpeed, ESuggestProjVelocityTraceOption::DoNotTrace);
+	
+	if(bHaveAimSolution)
 	{
 		auto AimDirection = OUTLaunchVelocity.GetSafeNormal();
 		auto TankName = GetOwner()->GetName();
-		UE_LOG(LogTemp, Warning, TEXT("%s Aiming at: %s"), *TankName, *AimDirection.ToString());
+		MoveBarrelTowards(AimDirection);
 	}
+	return;
+}
+
+void UTankAimComponent::SetTurretReference(UStaticMeshComponent * TurretToSet)
+{
+}
+
+void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
+{
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+
+	Barrel->Elevate(5);
 }
 
 
