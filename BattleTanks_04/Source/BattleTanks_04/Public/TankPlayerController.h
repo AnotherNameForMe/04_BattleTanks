@@ -2,15 +2,13 @@
 
 #pragma once
 
-#include "Tank.h"
+
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "CoreMinimal.h"
 #include "TankPlayerController.generated.h"
 
-/**
- * 
- */
+class ATank;
 UCLASS()
 class BATTLETANKS_04_API ATankPlayerController : public APlayerController
 {
