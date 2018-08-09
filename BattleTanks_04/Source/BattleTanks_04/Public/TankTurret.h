@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"
 #include "TankTurret.generated.h"
 
@@ -19,6 +20,5 @@ public:
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Setup)
-		float MaxRotationPerSecond = 5.f;
-
+		float MaxDegreePerSecond = 30.f;
 };
