@@ -45,11 +45,9 @@ void UTankAimComponent::AimAt(FVector OUTHitLocation, float LaunchSpeed)
 		auto TankName = GetOwner()->GetName();
 		MoveBarrelTowards(AimDirection);
 	}
-	else
-	{
-
+	
 		return;
-	}
+	
 }
 
 void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
