@@ -7,8 +7,10 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+
 class UTankBarrel;
 class UTankAimComponent;
+class UTankMovementComponent;
 class AProjectile;
 
 UCLASS()
@@ -54,4 +56,7 @@ private:
 protected:
 
 	UTankAimComponent * TankAimComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent * TankMovementComponent = nullptr;
 };
