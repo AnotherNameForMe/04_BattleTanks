@@ -9,6 +9,16 @@
 #include "Engine/World.h"
 #include "TankAimComponent.generated.h"
 
+//Enum Aim State
+UENUM()
+enum class EFiringStatus : uint8
+{
+	Reload,
+	Aiming,
+	Locked
+};
+
+
 class UTankBarrel;
 class UTankTurret;
 
@@ -38,6 +48,8 @@ private:
 
 	void MoveTurretTowards(FRotator RotateDirection);
 
-
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+		EFiringStatus FiringStatus = EFiringStatus::Reload;
 
 };

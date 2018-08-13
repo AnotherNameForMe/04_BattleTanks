@@ -16,10 +16,10 @@ class BATTLETANKS_04_API ATankPlayerController : public APlayerController
 	
 private:
 	
-<<<<<<< HEAD
-=======
 
->>>>>>> a7e7791aecd14aba1a21a85151cec33ae293f663
+
+
+
 	virtual void BeginPlay() override;
 	
 	virtual void Tick(float DeltaTime) override;
@@ -44,9 +44,5 @@ private:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 		ATank * GetControlledTank() const;
-<<<<<<< HEAD
 
-
-=======
->>>>>>> a7e7791aecd14aba1a21a85151cec33ae293f663
 };

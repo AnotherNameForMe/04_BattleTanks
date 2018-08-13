@@ -19,10 +19,10 @@ class BATTLETANKS_04_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 		void SetTurretReference(UTankTurret* TurretToSet);
 
 	void AimAt(FVector HitLocation);
@@ -40,13 +40,13 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = "Setup")
 		float ReloadTimeInSeconds = 3.f;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditAnywhere, Category = "Firing")
 		float LaunchSpeed = 4000.f;
 
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = "Setup")
 		TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	UTankBarrel* Barrel = nullptr;
@@ -54,18 +54,12 @@ private:
 	double LastFireTime = 0.f;
 
 protected:
-<<<<<<< HEAD
+
 	UPROPERTY(BlueprintReadOnly)
-	UTankAimComponent * TankAimComponent = nullptr;
+		UTankAimComponent * TankAimComponent = nullptr;
 
 	UPROPERTY(BlueprintReadOnly)
 		UTankMovementComponent* TankMovementComponent = nullptr;
-=======
-	UFUNCTION(BlueprintReadOnly)
-	UTankAimComponent * TankAimComponent = nullptr;
 
-	UFUNCTION(BlueprintReadOnly)
-		UTankMovementComponent * TankMovementComponent = nullptr;
-
->>>>>>> a7e7791aecd14aba1a21a85151cec33ae293f663
+	
 };
