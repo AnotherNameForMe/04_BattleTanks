@@ -54,8 +54,9 @@ private:
 	double LastFireTime = 0.f;
 
 protected:
-
+	UPROPERTY(BlueprintReadOnly)
 	UTankAimComponent * TankAimComponent = nullptr;
 
-
+	UPROPERTY(BlueprintReadOnly)
+		UTankMovementComponent* TankMovementComponent = nullptr;
 };

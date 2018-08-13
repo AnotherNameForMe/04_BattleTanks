@@ -18,6 +18,7 @@ class BATTLETANKS_04_API UTankAimComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+
 	// Sets default values for this component's properties
 	UTankAimComponent();
 
