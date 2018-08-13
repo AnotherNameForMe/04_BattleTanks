@@ -11,13 +11,9 @@ void ATankPlayerController::BeginPlay()
 	Super:: BeginPlay();
 	auto AimComponent = GetControlledTank()->FindComponentByClass<UTankAimComponent>();
 	FoundAimComponent(AimComponent);
-	if (ensure(AimComponent))
+	if (!ensure(AimComponent)) { return; }
 	{
 		FoundAimComponent(AimComponent);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Missing AIm Componenet"));
 	}
 
 }

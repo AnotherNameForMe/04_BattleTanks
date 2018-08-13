@@ -2,9 +2,7 @@
 
 #include "Tank.h"
 #include "TankBarrel.h"
-#include "TankTurret.h"
 #include "TankAimComponent.h"
-#include "TankMovementComponent.h"
 #include "Projectile.h"
 #include "BattleTanks_04.h"
 
@@ -22,6 +20,7 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
+	TankAimComponent = FindComponentByClass<UTankAimComponent>();
 
 }
 void ATank::AimAt(FVector HitLocation)
