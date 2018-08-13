@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright EmbracedIT Ltd.
 
 #pragma once
 
@@ -9,6 +9,10 @@
 #include "TankPlayerController.generated.h"
 
 class ATank;
+class UTankAimComponent;
+/**
+*Responsible for Player aim
+*/
 UCLASS()
 class BATTLETANKS_04_API ATankPlayerController : public APlayerController
 {
@@ -16,10 +20,6 @@ class BATTLETANKS_04_API ATankPlayerController : public APlayerController
 	
 private:
 	
-
-
-
-
 	virtual void BeginPlay() override;
 	
 	virtual void Tick(float DeltaTime) override;
@@ -44,5 +44,7 @@ private:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 		ATank * GetControlledTank() const;
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+		void FoundAimComponent(UTankAimComponent* AimCompRef);
 
 };

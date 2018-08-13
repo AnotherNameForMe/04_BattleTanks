@@ -1,11 +1,16 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright EmbraceIT Ltd.
 #include "TankAimComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "BattleTanks_04Classes.h"
 
 
+void UTankAimComponent::Initialise(UTankBarrel * TankBarrelToSet, UTankTurret * TankTurretToSet)
+{
+	if (!TankBarrelToSet || !TankTurretToSet) { return; }
+	TankBarrel = TankBarrelToSet;
+	TankTurret = TankTurretToSet;
+}
 
 // Sets default values for this component's properties
 UTankAimComponent::UTankAimComponent()
@@ -16,27 +21,19 @@ UTankAimComponent::UTankAimComponent()
 
 	// ...
 }
-void UTankAimComponent::SetBarrelRefference(UTankBarrel* BarrelToSet)
-{
-	if (!BarrelToSet) { return; }
-	Barrel = BarrelToSet;
-}
 
-void UTankAimComponent::SetTurretReference(UTankTurret * TurretToSet)
-{
-	if (!TurretToSet){ return; }
-	Turret = TurretToSet;
-}
+
+
 
 
 void UTankAimComponent::AimAt(FVector OUTHitLocation, float LaunchSpeed)
 {
 
-	if (!Barrel) { return; }
+	if (!ensure(TankBarrel)) { return; }
 
 
 	FVector OUTLaunchVelocity;
-	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+	FVector StartLocation = TankBarrel->GetSocketLocation(FName("Projectile"));
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(this, OUTLaunchVelocity, StartLocation, OUTHitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace);
 
 	if (bHaveAimSolution)
@@ -52,16 +49,18 @@ void UTankAimComponent::AimAt(FVector OUTHitLocation, float LaunchSpeed)
 
 void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
 {
-	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	if (ensure(TankBarrel)|| ensure(TankTurret)) { return; }
+	auto BarrelRotator = TankBarrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
-	Barrel->Elevate(DeltaRotator.Pitch);
-	Turret->TurretRotation(DeltaRotator.Yaw);
+	TankBarrel->Elevate(DeltaRotator.Pitch);
+	TankTurret->TurretRotation(DeltaRotator.Yaw);
 }
 
 void UTankAimComponent::MoveTurretTowards(FRotator RotateDirection)
 {
+
 }
 
 

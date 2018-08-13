@@ -1,6 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright EmbracedIT Ltd.
 
 #include "TankPlayerController.h"
+#include "TankAimComponent.h"
 #include "Tank.h"
 #include "BattleTanks_04.h"
 
@@ -8,16 +9,17 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super:: BeginPlay();
-
-	auto ControlledTank = GetControlledTank();
-	if (!ControlledTank)
+	auto AimComponent = GetControlledTank()->FindComponentByClass<UTankAimComponent>();
+	FoundAimComponent(AimComponent);
+	if (ensure(AimComponent))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NO Controller"))
-
-	}else
+		FoundAimComponent(AimComponent);
+	}
+	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is controlled by TankPlayerController!!!"), *(ControlledTank->GetName()));
-}
+		UE_LOG(LogTemp, Warning, TEXT("Missing AIm Componenet"));
+	}
+
 }
 
 // Called every frame
@@ -35,7 +37,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowrdsCrosshairs()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetControlledTank())) { return; }
 
 	FVector HitLocation; //OUT parameter
 	if (bGetSightRayHitLocation(HitLocation))
