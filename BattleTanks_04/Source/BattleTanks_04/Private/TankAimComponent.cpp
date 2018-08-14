@@ -23,13 +23,19 @@ UTankAimComponent::UTankAimComponent()
 
 void UTankAimComponent::BeginPlay()
 {
-	Super BeginPlay();
+	Super::BeginPlay();
+
+	LastFireTime = FPlatformTime::Seconds();
+
 }
 
-void UTankAimComponent::TickComponent(float DeltaTime, ElevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+void UTankAimComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
-	Super TickComponent();
-	UE_LOG(LogTemp, Warning, TEXT("FUCK THIS STUPID ASS SHIT"));
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
+	{
+		FiringStatus = EFiringStatus::Reload;
+	}
 }
 
 void UTankAimComponent::Initialise(UTankBarrel * TankBarrelToSet, UTankTurret * TankTurretToSet)
@@ -63,7 +69,7 @@ void UTankAimComponent::AimAt(FVector OUTHitLocation)
 
 void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
 {
-	if (!ensure(TankBarrel)|| !ensure(TankTurret)) { return; }
+	if (!ensure(TankBarrel) || !ensure(TankTurret)) { return; }
 	auto BarrelRotator = TankBarrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
@@ -75,14 +81,12 @@ void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
 void UTankAimComponent::Fire()
 {
 	
-	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-	if (bIsReloaded)
+	if (FiringStatus != EFiringStatus::Reload)
 	{
 		if (!ensure(TankBarrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, TankBarrel->GetSocketLocation(FName("Projectile")), TankBarrel->GetSocketRotation(FName("Projectile")));
 
 		Projectile->LaunchProjectile(LaunchSpeed);
-		LastFireTime = FPlatformTime::Seconds();
 	}
 }
