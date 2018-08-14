@@ -8,7 +8,6 @@
 #include "GameFramework/Actor.h"
 #include "TankAIController.generated.h"
 
-class ATank;
 
 UCLASS()
 class BATTLETANKS_04_API ATankAIController : public AAIController

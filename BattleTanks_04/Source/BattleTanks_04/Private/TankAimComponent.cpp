@@ -2,8 +2,20 @@
 #include "TankAimComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "BattleTanks_04Classes.h"
 
+
+// Sets default values for this component's properties
+UTankAimComponent::UTankAimComponent()
+{
+	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+	// off to improve performance if you don't need them.
+	bWantsBeginPlay = true;
+	PrimaryComponentTick.bCanEverTick = false;
+
+	// ...
+}
 
 void UTankAimComponent::Initialise(UTankBarrel * TankBarrelToSet, UTankTurret * TankTurretToSet)
 {
@@ -12,21 +24,8 @@ void UTankAimComponent::Initialise(UTankBarrel * TankBarrelToSet, UTankTurret * 
 	TankTurret = TankTurretToSet;
 }
 
-// Sets default values for this component's properties
-UTankAimComponent::UTankAimComponent()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
-}
-
-
-
-
-
-void UTankAimComponent::AimAt(FVector OUTHitLocation, float LaunchSpeed)
+void UTankAimComponent::AimAt(FVector OUTHitLocation)
 {
 
 	if (!ensure(TankBarrel)) { return; }
@@ -58,10 +57,15 @@ void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
 	TankTurret->TurretRotation(DeltaRotator.Yaw);
 }
 
-void UTankAimComponent::MoveTurretTowards(FRotator RotateDirection)
+void UTankAimComponent::Fire()
 {
+	if (!ensure(TankBarrel && ProjectileBlueprint)) { return; }
+	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+	if (bIsReloaded)
+	{
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, TankBarrel->GetSocketLocation(FName("Projectile")), TankBarrel->GetSocketRotation(FName("Projectile")));
 
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
 }
-
-
-
