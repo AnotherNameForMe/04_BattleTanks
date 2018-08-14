@@ -39,6 +39,10 @@ public:
 		void Fire();
 
 private:
+
+	virtual void BeginPlay()override;
+	virtual void TickComponent(float DeltaTime, enum ElevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
 	UTankAimComponent();
 
 	void MoveBarrelTowards(FVector AimDirection);

@@ -6,15 +6,30 @@
 #include "BattleTanks_04Classes.h"
 
 
+
+
+
+
 // Sets default values for this component's properties
 UTankAimComponent::UTankAimComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+}
+
+void UTankAimComponent::BeginPlay()
+{
+	Super BeginPlay();
+}
+
+void UTankAimComponent::TickComponent(float DeltaTime, ElevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	Super TickComponent();
+	UE_LOG(LogTemp, Warning, TEXT("FUCK THIS STUPID ASS SHIT"));
 }
 
 void UTankAimComponent::Initialise(UTankBarrel * TankBarrelToSet, UTankTurret * TankTurretToSet)
@@ -59,10 +74,12 @@ void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
 
 void UTankAimComponent::Fire()
 {
-	if (!ensure(TankBarrel && ProjectileBlueprint)) { return; }
+	
 	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 	if (bIsReloaded)
 	{
+		if (!ensure(TankBarrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, TankBarrel->GetSocketLocation(FName("Projectile")), TankBarrel->GetSocketRotation(FName("Projectile")));
 
 		Projectile->LaunchProjectile(LaunchSpeed);
