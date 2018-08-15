@@ -64,6 +64,10 @@ private:
 
 	double LastFireTime = 0.f;
 
+	bool bIsBarrelMoving() const;
+
+	FVector AimDirection;
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")

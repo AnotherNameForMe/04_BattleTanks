@@ -29,16 +29,6 @@ void UTankAimComponent::BeginPlay()
 
 }
 
-void UTankAimComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
-	{
-		FiringStatus = EFiringStatus::Reload;
-	}
-}
-
 void UTankAimComponent::Initialise(UTankBarrel * TankBarrelToSet, UTankTurret * TankTurretToSet)
 {
 	if (!TankBarrelToSet || !TankTurretToSet) { return; }
@@ -46,6 +36,33 @@ void UTankAimComponent::Initialise(UTankBarrel * TankBarrelToSet, UTankTurret * 
 	TankTurret = TankTurretToSet;
 }
 
+
+void UTankAimComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
+	{
+		FiringStatus = EFiringStatus::Reload;
+	}
+	else if(bIsBarrelMoving())
+	{
+		FiringStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		FiringStatus = EFiringStatus::Locked;
+
+	}
+
+}
+
+bool UTankAimComponent::bIsBarrelMoving() const
+{
+	if (!ensure(TankBarrel)) { return false; }
+	auto BarrelForward = TankBarrel->GetForwardVector();
+		return !BarrelForward.Equals(AimDirection, 0.01f);
+}
 
 void UTankAimComponent::AimAt(FVector OUTHitLocation)
 {
@@ -59,8 +76,7 @@ void UTankAimComponent::AimAt(FVector OUTHitLocation)
 
 	if (bHaveAimSolution)
 	{
-		auto AimDirection = OUTLaunchVelocity.GetSafeNormal();
-		auto TankName = GetOwner()->GetName();
+		AimDirection = OUTLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
 	}
 	
@@ -78,6 +94,7 @@ void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
 	TankBarrel->Elevate(DeltaRotator.Pitch);
 	TankTurret->TurretRotation(DeltaRotator.Yaw);
 }
+
 
 void UTankAimComponent::Fire()
 {
