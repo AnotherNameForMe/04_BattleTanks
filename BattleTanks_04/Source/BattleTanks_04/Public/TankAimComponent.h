@@ -38,6 +38,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 		void Fire();
 
+	EFiringStatus GetFiringSatus() const;
+
 private:
 	UTankAimComponent();
 
