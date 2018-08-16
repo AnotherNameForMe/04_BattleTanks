@@ -15,7 +15,8 @@ enum class EFiringStatus : uint8
 {
 	Reload,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 class UTankBarrel;
@@ -39,6 +40,9 @@ public:
 		void Fire();
 
 	EFiringStatus GetFiringSatus() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetRoundsLeft() const;
 
 private:
 	UTankAimComponent();
@@ -69,6 +73,8 @@ private:
 	bool bIsBarrelMoving() const;
 
 	FVector AimDirection;
+
+	int RoundsLeft = 3;
 
 
 protected:
