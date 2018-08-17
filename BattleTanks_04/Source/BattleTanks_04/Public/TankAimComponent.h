@@ -42,7 +42,7 @@ public:
 	EFiringStatus GetFiringSatus() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetRoundsLeft() const;
+	int32 GetRoundsLeft() const;
 
 private:
 	UTankAimComponent();
@@ -62,6 +62,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float LaunchSpeed = 4000.f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		int32 RoundsLeft = 3;
+
 	UPROPERTY(EditAnywhere, Category = "Setup")
 		float ReloadTimeInSeconds = 3.f;
 
@@ -74,7 +77,7 @@ private:
 
 	FVector AimDirection;
 
-	int RoundsLeft = 3;
+	
 
 
 protected:
