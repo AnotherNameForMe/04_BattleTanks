@@ -3,11 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PhysicsEngine/RadialForceComponent.h"
+#include "ParticleDefinitions.h"
+#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
-class ParticleSystem;
 class StaticMeshComponent;
 
 UCLASS()
@@ -31,6 +34,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit);
+	
 	UProjectileMovementComponent * ProjectileMovement = nullptr;
 	
 	UPROPERTY(VisibleAnywhere)
@@ -42,7 +48,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		UParticleSystemComponent * ImpactBlast = nullptr;
 
-	UFUNCTION()
-		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+	UPROPERTY(VisibleAnywhere)
+		URadialForceComponent* ExplosionForce = nullptr;
 
 };
