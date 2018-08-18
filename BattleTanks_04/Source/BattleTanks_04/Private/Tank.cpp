@@ -20,7 +20,7 @@ float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEv
 	CurrentHealth -= DamageToApply;
 	if (CurrentHealth <= 0)
 	{
-		Destroy(this);
+		
 	}
 	return DamageToApply;
  }
