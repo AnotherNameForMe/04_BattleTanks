@@ -21,6 +21,10 @@ private:
 	
 	virtual void BeginPlay() override;
 	
+	void SetPawn(APawn * InPawn);
+
+	
+
 	virtual void Tick(float DeltaTime) override;
 
 	void AimTowrdsCrosshairs();
@@ -45,4 +49,6 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void FoundAimComponent(UTankAimComponent* AimCompRef);
 
+	UFUNCTION()
+	void OnTanksDeath();
 };
