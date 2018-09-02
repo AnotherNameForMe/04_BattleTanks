@@ -99,11 +99,11 @@ void UTankAimComponent::AimAt(FVector OUTHitLocation)
 	
 }
 
-void UTankAimComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimComponent::MoveBarrelTowards(FVector TargetAimDirection)
 {
 	if (!ensure(TankBarrel) || !ensure(TankTurret)) { return; }
 	auto BarrelRotator = TankBarrel->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
+	auto AimAsRotator = TargetAimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 	TankBarrel->Elevate(DeltaRotator.Pitch);
