@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
+#include "Components/SphereComponent.h"
 #include "SprungWheel.generated.h"
 
 UCLASS()
@@ -25,12 +26,19 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent * Mass = nullptr;
 	
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent * Wheel = nullptr;
+	UPROPERTY(VisibleDefaultsOnly)
+		USphereComponent* Wheels = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		USphereComponent* Axles = nullptr;
 	
-	UPROPERTY(VisibleAnywhere)
-	UPhysicsConstraintComponent* PhysicsConstraintComponent = nullptr;
+	UPROPERTY(VisibleDefaultsOnly)
+		UPhysicsConstraintComponent* WheelConstraintComponent = nullptr;
+	
+	UPROPERTY(VisibleDefaultsOnly)
+		UPhysicsConstraintComponent* AxleConstraintComponent = nullptr;
+
+	void SetupConstraints();
+
 };
